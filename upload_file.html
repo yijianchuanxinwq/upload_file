@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>文件上传，不兼容IE浏览器</title>
+		<script src="jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<form id="uploadForm" style="width: 40%;margin: auto;">
+			<input type="file" name="upfile" id="file1" value="">
+		</form>
+	</body>
+	<script type="text/javascript">
+		$("#file1").on('change', function() {
+//	console.log($("#file1").val());
+	a = $("#file1").val().split(".", 200)[1];
+	if(a == "xml"||a=="cml") {
+		var formData = new FormData($("#uploadForm")[0]);
+		$.ajax({
+			url: 'upload_file.php',//链接的php文件
+			type: 'post',//请求方式
+			data: formData,//传输数据
+			async: false,//同步异步上传模式。true为异步上传
+			cache: false,//cache只有GET方式的时候有效,true可能会读缓存
+			contentType: false,//从服务器端提交过来的数据格式
+			processData: false,//对参数进行序列化处理
+			success: function(res) {
+				path = res;
+				var filenameQ = res.split('upload/', 200)[1];
+				filename = filenameQ.split('.', 200)[0];
+//				console.log(path+'---'+filename);
+			}
+		});
+	}
+});
+	</script>
+</html>
